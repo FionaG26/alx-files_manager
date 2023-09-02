@@ -1,8 +1,7 @@
-import { MongoClient } from 'mongodb';
-import dotenv from 'dotenv';
-
-// Load environment variables from a .env file
-dotenv.config();
+import mongodb from 'mongodb';
+// eslint-disable-next-line no-unused-vars
+import Collection from 'mongodb/lib/collection';
+import envLoader from './loader';
 
 /**
  * Represents a MongoDB client.
@@ -12,12 +11,13 @@ class DBClient {
    * Creates a new DBClient instance.
    */
   constructor() {
+    envLoader();
     const host = process.env.DB_HOST || 'localhost';
     const port = process.env.DB_PORT || 27017;
     const database = process.env.DB_DATABASE || 'files_manager';
     const dbURL = `mongodb://${host}:${port}/${database}`;
 
-    this.client = new MongoClient(dbURL, { useUnifiedTopology: true });
+    this.client = new mongodb.MongoClient(dbURL, { useUnifiedTopology: true });
     this.client.connect();
   }
 
