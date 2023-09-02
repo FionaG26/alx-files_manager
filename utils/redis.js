@@ -1,5 +1,9 @@
 import { promisify } from 'util';
 import { createClient } from 'redis';
+import dotenv from 'dotenv';
+
+// Load environment variables from a .env file
+dotenv.config();
 
 /**
  * Represents a Redis client.
