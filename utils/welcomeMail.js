@@ -2,18 +2,13 @@ import fs from 'fs';
 import readline from 'readline';
 import { promisify } from 'util';
 import mimeMessage from 'mime-message';
-import { gmail_v1 as gmailV1, google } from 'googleapis';
+import { google } from 'googleapis';
 
-const SCOPES = ['https://www.googleapis.com/auth/gmail.send'];
 const TOKEN_PATH = 'token.json';
 const readFileAsync = promisify(fs.readFile);
 const writeFileAsync = promisify(fs.writeFile);
 
 async function getNewToken(oAuth2Client, callback) {
-  const authUrl = oAuth2Client.generateAuthUrl({
-    access_type: 'offline',
-    scope: SCOPES,
-  });
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -59,7 +54,7 @@ function sendMailService(auth, mail) {
   gmail.users.messages.send({
     userId: 'me',
     requestBody: mail,
-  }, (err, _res) => {
+  }, (err) => {
     if (err) {
       console.log(`The API returned an error: ${err.message || err.toString()}`);
       return;
